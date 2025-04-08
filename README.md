@@ -8,7 +8,7 @@ For any data related issue, you can also raise a Issue [here](https://github.com
 
 # Install
 
-`npm i country-state`
+`npm i country-state-no-city`
 
 # Demos - Tree Shaking
 
