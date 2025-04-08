@@ -1,13 +1,13 @@
-country-state-city
+country-state
 ==============================
-Basic library for Country, State and City
+Basic library for Country and State
 
 Data Source:<br>
 https://github.com/dr5hn/countries-states-cities-database<br>
 For any data related issue, you can also raise a Issue [here](https://github.com/dr5hn/countries-states-cities-database/issues/new).
 
 # Install
-`npm i country-state-city`
+`npm i country-state`
 
 # Demos - Tree Shaking
 1. Next.js
@@ -38,7 +38,7 @@ For any data related issue, you can also raise a Issue [here](https://github.com
 ## Release : `v3.1.0`
 
 ## Overview
-1. The **data** folder in the root contains all the data of **Countries, their States and Cities**
+1. The **data** folder in the root contains all the data of **Countries, their States**
 2. The earlier **large big JSONs are split into smaller JSONs** and stored in separate files and folder
 3. The advantage of doing so is to make it **easy to check, test and submit** the change. It's **easier to review** a small file than a large file. It's **easier to debug** any missing or wrong values in a small file.
 4. This will help in future optimisation  
@@ -96,19 +96,6 @@ Please follow this [guidelines](/dataUpdateGuide.md)
     ```
 
 
-## For versions `below v2.2.0 and above v0.1.8`
-
-  - ES6 Module usage
-   
-     ```js
-     import csc from 'country-state-city';
-     ```
-
-  - AMD Module usage
-  
-    ```js
-    let csc = require('country-state-city').default;
-    ```
 
 # Docs
 
@@ -175,44 +162,6 @@ type: **array of json | IState**
 	}
 ]
 
-```
-City.getCitiesOfState(countryCode, stateCode)
----------------
-
-It accepts a valid `CountryCode`, `StateCode` and returns *all Cities* as Array of JSON
-
-type: **array of json | ICity**
-
-```js
-[
-	{
-		"name": "New Delhi",
-		"countryCode": "IN",
-		"stateCode": "DL",
-		"latitude": "28.63576000",
-		"longitude": "77.22445000"
-	}
-]
-
-```
-
-City.getCitiesOfCountry(countryCode)
----------------
-
-It accepts a valid `CountryCode` and returns *all Cities* as Array of JSON
-
-type: **array of json | ICity**
-
-```js
-[
-	{
-		"name": "New Delhi",
-		"countryCode": "IN",
-		"stateCode": "DL",
-		"latitude": "28.63576000",
-		"longitude": "77.22445000"
-	}
-]
 
 ```
 
@@ -264,23 +213,6 @@ type: **array of json | IState**
 ]
 ```
 
-City.getAllCities
----------------
-It returns **all Cities**
-
-type: **array of json | ICity**
-
-```js
-[
-	{
-		"name": "Delhi",
-		"isoCode": "DL",
-		"countryCode": "IN",
-		"latitude": "28.70405920",
-		"longitude": "77.10249020"
-	}
-]
-```
 
 Special Thanks
 ---------------

@@ -1,7 +1,7 @@
 {
-	"name": "country-state-city",
-	"version": "3.2.1",
-	"description": "Library for fetching Country, its States and Cities",
+	"name": "country-state",
+	"version": "1.0.0",
+	"description": "Library for fetching Country, and its States",
 	"main": "./lib/cjs/index.js",
 	"module": "./lib/index.js",
 	"types": "./lib/index.d.ts",
@@ -23,7 +23,7 @@
 	},
 	"repository": {
 		"type": "git",
-		"url": "git+https://github.com/harpreetkhalsagtbit/country-state-city.git"
+		"url": "git+https://github.com/mhmaidi789/country-state.git"
 	},
 	"husky": {
 		"hooks": {
@@ -34,15 +34,14 @@
 	"keywords": [
 		"Country",
 		"State",
-		"City",
 		"GeoLocation",
 		"Search",
 		"Filter"
 	],
 	"bugs": {
-		"url": "https://github.com/harpreetkhalsagtbit/country-state-city/issues"
+		"url": "https://github.com/mhmaidi789/country-state/issues"
 	},
-	"homepage": "https://github.com/harpreetkhalsagtbit/country-state-city#readme",
+	"homepage": "https://github.com/mhmaidi789/country-state#readme",
 	"devDependencies": {
 		"@types/jest": "^26.0.24",
 		"@types/node": "^16.18.11",
