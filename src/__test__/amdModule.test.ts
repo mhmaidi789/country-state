@@ -1,9 +1,7 @@
 import executeAllCountryTests from './country.test';
 import executeAllStateTests from './state.test';
-import executeAllCityTests from './city.test';
 
-const { Country, State, City } = require('../index');
+const { Country, State } = require('../index');
 
 executeAllCountryTests(Country);
 executeAllStateTests(State);
-executeAllCityTests(City);

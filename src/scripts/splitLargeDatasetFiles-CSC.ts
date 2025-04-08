@@ -5,9 +5,8 @@ import path from 'path';
 
 import countryJSON from '../assets/country.json';
 import stateJSON from '../assets/state.json';
-import cityJSON from '../assets/city.json';
 
-import { ICountry, IState, ICity } from '../interface';
+import { ICountry, IState } from '../interface';
 
 const PATH_TO_DATA_FOLDER = '../../data';
 /**
@@ -100,84 +99,3 @@ fs.writeFileSync(stateListLiteNestedJSONFilePath, JSON.stringify(stateListLite, 
 fs.writeFileSync(stateListGeoNestedJSONFilePath, JSON.stringify(stateListGeo, null, 3), 'utf-8');
 fs.writeFileSync(stateMetaFileJestedJSONPath, JSON.stringify(stateMeta, null, 3), 'utf-8');
 
-/**
- * Cities
- */
-const cityListLite: any = {};
-const cityListGeo: any = {};
-const cityMeta: any = {};
-const cityUndefined: any = [];
-(cityJSON as ICity[]).forEach((city: ICity) => {
-	const { name, countryCode, stateCode, latitude, longitude } = city;
-	const cityISOPropriterValue = name.replace(/\W/g, '_');
-	const stateParent = countryMeta[countryCode];
-
-	const cityParent = stateMeta[stateParent][stateCode];
-
-	if (!cityListLite[stateParent]) {
-		cityListLite[stateParent] = {};
-	}
-	if (!cityListLite[stateParent][cityParent]) {
-		cityListLite[stateParent][cityParent] = [];
-	}
-
-	if (!cityListGeo[stateParent]) {
-		cityListGeo[stateParent] = {};
-	}
-	if (!cityListGeo[stateParent][cityParent]) {
-		cityListGeo[stateParent][cityParent] = [];
-	}
-
-	if (!cityMeta[stateParent]) {
-		cityMeta[stateParent] = {};
-	}
-	if (!cityMeta[stateParent][cityParent]) {
-		cityMeta[stateParent][cityParent] = {};
-	}
-
-	// console.log(JSON.stringify(cityListLite, null, 3), stateParent, cityParent);
-	cityListLite[stateParent][cityParent].push({ name, countryCode, stateCode });
-	cityListGeo[stateParent][cityParent].push({ name, countryCode, stateCode, latitude, longitude });
-	cityMeta[stateParent][cityParent][cityISOPropriterValue] = cityISOPropriterValue;
-
-	const cityListLiteJSONFilePath: any = path.join(
-		`${__dirname}/${PATH_TO_DATA_FOLDER}/${stateParent}/${cityParent}/allCities.lite.json`,
-	);
-	const cityListGeoJSONFilePath: any = path.join(
-		`${__dirname}/${PATH_TO_DATA_FOLDER}/${stateParent}/${cityParent}/allCities.geo.json`,
-	);
-	const cityeMetaFilePath: any = path.join(
-		`${__dirname}/${PATH_TO_DATA_FOLDER}/${stateParent}/${cityParent}/allCities.meta.json`,
-	);
-
-	if (cityParent) {
-		fs.writeFileSync(
-			cityListLiteJSONFilePath,
-			JSON.stringify(cityListLite[stateParent][cityParent], null, 3),
-			'utf-8',
-		);
-
-		fs.writeFileSync(
-			cityListGeoJSONFilePath,
-			JSON.stringify(cityListGeo[stateParent][cityParent], null, 3),
-			'utf-8',
-		);
-		fs.writeFileSync(cityeMetaFilePath, JSON.stringify(cityMeta[stateParent][cityParent], null, 3), 'utf-8');
-	} else {
-		cityUndefined.push(city);
-		// console.log(city, 'cityParent undefined');
-	}
-});
-
-const cityListLiteNestedJSONFilePath: any = path.join(`${__dirname}/${PATH_TO_DATA_FOLDER}/allCitiesNested.lite.json`);
-const cityListGeoNestedJSONFilePath: any = path.join(`${__dirname}/${PATH_TO_DATA_FOLDER}/allCitiesNested.geo.json`);
-const cityMetaFileNestedJSONPath: any = path.join(`${__dirname}/${PATH_TO_DATA_FOLDER}/allCitiesNested.meta.json`);
-// cities with missing/invalid state code
-const undefinedCityFoundFileNestedJSONPath: any = path.join(
-	`${__dirname}/${PATH_TO_DATA_FOLDER}/allUndefinedCitiesNested.meta.json`,
-);
-
-fs.writeFileSync(cityListLiteNestedJSONFilePath, JSON.stringify(cityListLite, null, 3), 'utf-8');
-fs.writeFileSync(cityListGeoNestedJSONFilePath, JSON.stringify(cityListGeo, null, 3), 'utf-8');
-fs.writeFileSync(cityMetaFileNestedJSONPath, JSON.stringify(cityMeta, null, 3), 'utf-8');
-fs.writeFileSync(undefinedCityFoundFileNestedJSONPath, JSON.stringify(cityUndefined, null, 3), 'utf-8');

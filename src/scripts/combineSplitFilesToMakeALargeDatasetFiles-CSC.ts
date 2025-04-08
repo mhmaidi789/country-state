@@ -1,12 +1,12 @@
-// Combine all the split files to one Country, State, City file
+// Combine all the split files to one Country, State file
 /* eslint-disable no-console */
 import assert from 'assert';
 import fs from 'fs';
 import path from 'path';
 import { promisify } from 'util';
 import { deflate } from 'zlib';
-import { ICountry, IState, ICity } from '../interface';
-import { State, City } from '../index';
+import { ICountry, IState } from '../interface';
+import { State } from '../index';
 
 const PATH_TO_DATA_FOLDER = '../../data';
 
@@ -92,82 +92,9 @@ const stateMetas: { [Property: string]: { stateSubPath: string } } = allStates.r
 	return accumulator;
 }, {} as { [Property: string]: { stateSubPath: string } });
 
-/**
- * City
- */
-const allCities: ICity[] = [];
-allStates.forEach((state) => {
-	process.stdout.write(`Combining ${state.countryCode}-${state.isoCode}...`);
-	const { countryPath } = countryMetas[state.countryCode]; // `${country.name.replace(/\W/g, '_')}-${country.isoCode}`;
-	const { stateSubPath } = stateMetas[`${state.countryCode}-${state.isoCode}`]; // `${country.name.replace(/\W/g, '_')}-${country.isoCode}`;
 
-	const allCitiesLite: Map<string, ICity> = new Map();
-	const allCitiesGeo: Map<string, ICity> = new Map();
-	try {
-		(
-			JSON.parse(
-				fs.readFileSync(
-					path.join(__dirname, PATH_TO_DATA_FOLDER, countryPath, stateSubPath, 'allCities.lite.json'),
-					'utf-8',
-				),
-			) as ICity[]
-		).reduce((accumulator, item) => {
-			accumulator.set(item.name, item);
-			return accumulator;
-		}, allCitiesLite);
 
-		(
-			JSON.parse(
-				fs.readFileSync(
-					path.join(__dirname, PATH_TO_DATA_FOLDER, countryPath, stateSubPath, 'allCities.geo.json'),
-					'utf-8',
-				),
-			) as ICity[]
-		).reduce((accumulator, item) => {
-			accumulator.set(item.name, item);
-			return accumulator;
-		}, allCitiesGeo);
 
-		[...allCitiesLite.keys()].forEach((key) => {
-			assert(allCitiesGeo.get(key));
-			const combine: ICity = { ...allCitiesLite.get(key)!, ...allCitiesGeo.get(key)! };
-			allCities.push(combine);
-		});
-	} catch (error) {
-		if (error instanceof Error) {
-			// ✅ TypeScript knows err is Error console.log(error.message);
-			process.stderr.write(` ${error.message}\n`);
-		} else {
-			console.log('Unexpected error', error);
-		}
-	} finally {
-		process.stdout.write(`\rCombined ${state.countryCode}-${state.isoCode}: ${allCitiesLite.size} States\n`);
-	}
-});
-
-/**
- *
- * converting
- *    {
-      "name": "Canillo",
-      "countryCode": "AD",
-      "stateCode": "02",
-      "latitude": "42.56760000",
-      "longitude": "1.59756000"
-   }
- * to
- * ["Canillo", "AD", "02", "42.56760000", "1.59756000"]
- */
-const convertJSONToArraysToReduceFileSize = (data: any) => {
-	return data.map((item: any) => Object.values(item))
-};
-
-// convertJSONToArraysToReduceFileSize will reduce file size of city from 16.4Mb(minified, unminified-14.4MB reduced from 24MB) to ~8.1Mb(minified)
-// this will also require changes in the city function
-fs.writeFileSync(
-	path.join(__dirname, '../', 'assets/city.json'),
-	JSON.stringify(convertJSONToArraysToReduceFileSize(City.sortByStateAndName(allCities)), null, 3),
-);
 
 if (process.env.gz === 'true') {
 	const deflatePromise = promisify(deflate);
@@ -177,9 +104,5 @@ if (process.env.gz === 'true') {
 
 	deflatePromise(JSON.stringify(allStates, null, 3)).then((zipped) => {
 		fs.writeFileSync(path.join(__dirname, '../', 'assets/states.gz'), zipped);
-	});
-
-	deflatePromise(JSON.stringify(allCities, null, 3)).then((zipped) => {
-		fs.writeFileSync(path.join(__dirname, '../', 'assets/cities.gz'), zipped);
 	});
 }

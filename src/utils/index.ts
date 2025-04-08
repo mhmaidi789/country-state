@@ -1,4 +1,4 @@
-import { ICountry, IState, ICity } from '../interface';
+import { ICountry, IState } from '../interface';
 
 export const findEntryByCode = (source: any, code: string) => {
 	if (code && source != null) {
@@ -20,11 +20,11 @@ export const findStateByCodeAndCountryCode = (source: any, code: string, country
 	return undefined;
 };
 
-export function defaultKeyToCompare<T extends ICountry | IState | ICity>(entity: T) {
+export function defaultKeyToCompare<T extends ICountry | IState>(entity: T) {
 	return entity.name;
 }
 
-export const compare = <T extends ICountry | IState | ICity>(
+export const compare = <T extends ICountry | IState>(
 	a: T,
 	b: T,
 	// eslint-disable-next-line no-unused-vars
@@ -35,10 +35,4 @@ export const compare = <T extends ICountry | IState | ICity>(
 	return 0;
 };
 
-export const convertArrayToObject = (keys: string[], arr: string[][]): ICity[] => {
-	const result = arr.map((subArr) => {
-		return Object.fromEntries(keys.map((key, index) => [key, subArr[index]]))
-	})
 
-	return (result as unknown as ICity[]);
-}
